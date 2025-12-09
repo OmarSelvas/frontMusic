@@ -1,5 +1,6 @@
 <div class="search-results-container">
-  <div class="results-header" style="display: flex; align-items: center; gap: 10px;">
+  
+  <div class="results-header" style="display: flex; align-items: center; gap: 15px;">
     <span class="material-symbols-rounded" style="font-size: 36px; color: #1db954;">collections_bookmark</span>
     <div>
       <h1 style="margin: 0; font-size: 28px;">Mi Biblioteca</h1>
@@ -9,7 +10,7 @@
 
   <div *ngIf="isLoading" style="text-align: center; padding: 60px; color: white;">
     <div class="spinner-large"></div>
-    <p style="margin-top: 15px; color: #b3b3b3;">Sincronizando...</p>
+    <p style="margin-top: 15px; color: #b3b3b3;">Sincronizando con base de datos...</p>
   </div>
 
   <div class="results-list" *ngIf="!isLoading">
@@ -34,7 +35,16 @@
         </div>
       </div>
 
-      <span class="material-symbols-rounded" style="color: #1db954; margin-right: 10px;">favorite</span>
+      <button 
+        (click)="eliminarCancion(track.id)" 
+        class="delete-btn"
+        title="Eliminar de mi biblioteca"
+        style="background: none; border: none; cursor: pointer; padding: 8px; display: flex; align-items: center; transition: all 0.2s;">
+        
+        <span class="material-symbols-rounded heart-icon">favorite</span>
+      
+      </button>
+      
     </div>
 
     <div *ngIf="misCanciones.length === 0" style="text-align: center; margin-top: 60px; color: #666;">

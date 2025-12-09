@@ -2,18 +2,23 @@
   <h2 class="song-title" [title]="currentTrack?.name">{{ currentTrack?.name }}</h2>
   <p class="song-artist" [title]="currentTrack?.artistName">{{ currentTrack?.artistName }}</p>
   
-  <button (click)="crearBaseDeDatos()" *ngIf="!realAlbumId" class="retry-button" style="background: #555; margin-bottom: 5px;">
-     Inicializar BD (Click 1 vez)
-  </button>
-
-  <button (click)="saveToMyDb()" class="retry-button" style="margin-bottom: 10px; background: #1db954;">
-     Guardar en Mi Base de Datos
+  <button 
+    (click)="saveToMyDb()" 
+    [disabled]="isSaving"
+    class="retry-button" 
+    [style.background]="isSaving ? '#555' : '#1db954'"
+    style="margin-bottom: 10px; transition: all 0.3s;">
+    
+    <span *ngIf="!isSaving"> Guardar en Biblioteca</span>
+    <span *ngIf="isSaving"> Guardando...</span>
   </button>
   
-  <p *ngIf="saveMessage" style="color: #fff; font-size: 12px; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 4px;">
+  <p *ngIf="saveMessage" style="color: #fff; font-size: 12px; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 4px; display: inline-block;">
     {{ saveMessage }}
   </p>
 
   <div class="song-meta">
-    </div>
+    <span class="album-name" [title]="currentTrack?.albumName">{{ currentTrack?.albumName }}</span>
+    <span class="duration">{{ getDuration() }}</span>
+  </div>
 </div>

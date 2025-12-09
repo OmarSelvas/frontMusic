@@ -7,8 +7,8 @@
           [alt]="currentTrack.name"
         >
       </div>
-      <div class="track-image placeholder" *ngIf="!currentTrack">
-        <span>🎵</span>
+      <div class="track-image placeholder" *ngIf="!currentTrack" style="display: grid; place-items: center; background: #282828;">
+        <span class="material-symbols-rounded" style="font-size: 28px; color: #666;">music_note</span>
       </div>
       
       <div class="track-details">
@@ -24,36 +24,24 @@
     <div class="player-center">
       <div class="player-buttons">
         <button class="control-btn secondary" (click)="toggleShuffle()" title="Aleatorio">
-          <svg viewBox="0 0 24 24" width="16" height="16">
-            <path fill="currentColor" d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
-          </svg>
+          <span class="material-symbols-rounded" style="font-size: 20px;">shuffle</span>
         </button>
         
         <button class="control-btn secondary" (click)="previous()" title="Anterior">
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor" d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-          </svg>
+          <span class="material-symbols-rounded" style="font-size: 28px;">skip_previous</span>
         </button>
         
-        <button class="control-btn primary" (click)="togglePlay()" title="Reproducir/Pausar">
-          <svg *ngIf="!isPlaying" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="currentColor" d="M8 5v14l11-7z"/>
-          </svg>
-          <svg *ngIf="isPlaying" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="currentColor" d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-          </svg>
+        <button class="control-btn primary" (click)="togglePlay()" title="Reproducir/Pausar" style="background: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;">
+          <span class="material-symbols-rounded" style="font-size: 28px; color: black;" *ngIf="!isPlaying">play_arrow</span>
+          <span class="material-symbols-rounded" style="font-size: 28px; color: black;" *ngIf="isPlaying">pause</span>
         </button>
         
         <button class="control-btn secondary" (click)="next()" title="Siguiente">
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor" d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-          </svg>
+          <span class="material-symbols-rounded" style="font-size: 28px;">skip_next</span>
         </button>
         
         <button class="control-btn secondary" (click)="toggleRepeat()" title="Repetir">
-          <svg viewBox="0 0 24 24" width="16" height="16">
-            <path fill="currentColor" d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
-          </svg>
+          <span class="material-symbols-rounded" style="font-size: 20px;">repeat</span>
         </button>
       </div>
 
@@ -66,6 +54,7 @@
           [max]="duration" 
           [value]="currentTime"
           (input)="seek($event)"
+          [disabled]="!currentTrack?.previewUrl"
         >
         <span class="time">{{ formatTime(duration) }}</span>
       </div>
@@ -74,9 +63,9 @@
     <div class="player-right">
       <div class="volume-control">
         <button class="control-btn secondary volume-icon">
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-          </svg>
+          <span class="material-symbols-rounded" style="font-size: 20px;">
+            {{ volume === 0 ? 'volume_off' : (volume < 50 ? 'volume_down' : 'volume_up') }}
+          </span>
         </button>
         <input 
           type="range" 

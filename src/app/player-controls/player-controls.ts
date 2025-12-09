@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MusicStateService } from '../services/music-state';
+import { AudioPlayerService } from '../services/audio-player'; 
 import { Track } from '../models/track.models';
 
 @Component({
@@ -13,66 +14,88 @@ import { Track } from '../models/track.models';
 })
 export class PlayerControlsComponent implements OnInit, OnDestroy {
   currentTrack: Track | null = null;
-  isPlaying: boolean = false;
-  currentTime: number = 0;
-  duration: number = 0;
-  volume: number = 80;
   
-  private subscription?: Subscription;
+  isPlaying = false;
+  currentTime = 0;
+  duration = 0;
+  volume = 50; 
+  
+  private subscriptions: Subscription[] = [];
 
-  constructor(private musicState: MusicStateService) {}
+  constructor(
+    private musicState: MusicStateService,
+    private audioPlayer: AudioPlayerService // INYECTAR
+  ) {}
 
   ngOnInit(): void {
-    this.subscription = this.musicState.currentTrack$.subscribe(track => {
-      this.currentTrack = track;
-      if (track) {
-        this.duration = track.duration;
+    // 1. Escuchar cambio de canción
+    const trackSub = this.musicState.currentTrack$.subscribe(track => {
+      // Si cambia la canción y tiene preview, reproducirla automáticamente
+      if (track && track.id !== this.currentTrack?.id && track.previewUrl) {
+        this.audioPlayer.playTrack(track.previewUrl);
       }
+      this.currentTrack = track;
     });
+
+    // 2. Escuchar estado de reproducción (Play/Pause)
+    const playingSub = this.audioPlayer.isPlaying$.subscribe(isPlaying => {
+      this.isPlaying = isPlaying;
+    });
+
+    // 3. Escuchar progreso de tiempo
+    const timeSub = this.audioPlayer.currentTime$.subscribe(time => {
+      this.currentTime = time;
+    });
+
+    // 4. Escuchar duración real del audio
+    const durationSub = this.audioPlayer.duration$.subscribe(dur => {
+      // Usamos la duración del audio real (30s) en lugar de la del track completo
+      // para que la barra de progreso sea precisa con el preview.
+      this.duration = dur;
+    });
+
+    this.subscriptions.push(trackSub, playingSub, timeSub, durationSub);
+    
+    // Configurar volumen inicial
+    this.audioPlayer.setVolume(this.volume);
   }
 
   togglePlay(): void {
-    this.isPlaying = !this.isPlaying;
-  }
-
-  previous(): void {
-    console.log('⏮️ Anterior');
-  }
-
-  next(): void {
-    console.log('⏭️ Siguiente');
-  }
-
-  toggleShuffle(): void {
-    console.log('🔀 Shuffle');
-  }
-
-  toggleRepeat(): void {
-    console.log('🔁 Repeat');
+    if (this.currentTrack?.previewUrl) {
+      this.audioPlayer.togglePlay();
+    } else {
+      console.warn('Esta canción no tiene vista previa disponible');
+    }
   }
 
   seek(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.currentTime = parseInt(input.value);
-    console.log('⏱️ Seek to:', this.currentTime);
+    const timeMs = parseInt(input.value);
+    this.audioPlayer.seek(timeMs);
   }
 
   changeVolume(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.volume = parseInt(input.value);
-    console.log('🔊 Volumen:', this.volume);
+    this.audioPlayer.setVolume(this.volume);
   }
 
+  // Helpers visuales
   formatTime(ms: number): string {
     if (!ms) return '0:00';
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  // Funciones placeholder (para el futuro)
+  previous() { console.log('Anterior'); }
+  next() { console.log('Siguiente'); }
+  toggleShuffle() { console.log('Aleatorio'); }
+  toggleRepeat() { console.log('Repetir'); }
+
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
