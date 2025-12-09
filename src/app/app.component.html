@@ -3,23 +3,25 @@
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <span class="logo-icon">🎵</span>
+          <span class="material-symbols-rounded logo-icon" style="font-size: 32px; color: #1db954;">graphic_eq</span>
           <span class="logo-text">Mi Música</span>
         </div>
       </div>
       
       <nav class="sidebar-nav">
-        <a class="nav-item" routerLink="/search" routerLinkActive="active">
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
+        <a class="nav-item" (click)="navigateToSearch()" [class.active]="isSearchActive()">
+          <span class="material-symbols-rounded">search</span>
           <span>Buscar</span>
         </a>
+
         <a class="nav-item" routerLink="/player" routerLinkActive="active">
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-          </svg>
+          <span class="material-symbols-rounded">queue_music</span>
           <span>Reproduciendo</span>
+        </a>
+
+        <a class="nav-item" routerLink="/biblioteca" routerLinkActive="active">
+          <span class="material-symbols-rounded">library_music</span>
+          <span>Biblioteca</span>
         </a>
       </nav>
 
@@ -34,17 +36,4 @@
   </div>
 
   <app-player-controls></app-player-controls>
-  <nav class="sidebar-nav">
-    
-  <a class="nav-item" routerLink="/search" routerLinkActive="active">
-    <span>Buscar</span>
-  </a>
-  <a class="nav-item" routerLink="/player" routerLinkActive="active">
-    <span>Reproduciendo</span>
-  </a>
-  
-  <a class="nav-item" routerLink="/mis-canciones" routerLinkActive="active">
-    <span style="font-size: 20px;">💾</span> <span>Mis Guardados</span>
-  </a>
-</nav>
 </div>

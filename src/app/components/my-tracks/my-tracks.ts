@@ -23,8 +23,7 @@ export class MyTracksComponent implements OnInit {
   cargarCanciones() {
     this.myBackend.getAllTracks().subscribe({
       next: (respuesta) => {
-        // Asumiendo que tu backend devuelve { success: true, data: [...] }
-        this.misCanciones = respuesta.data;
+        this.misCanciones = respuesta.data || []; 
         this.isLoading = false;
       },
       error: (err) => {

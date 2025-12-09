@@ -1,54 +1,46 @@
-<div class="search-results-container"> <div class="results-header">
-    <h1>Mi Biblioteca</h1>
+<div class="search-results-container">
+  <div class="results-header" style="display: flex; align-items: center; gap: 10px;">
+    <span class="material-symbols-rounded" style="font-size: 36px; color: #1db954;">collections_bookmark</span>
+    <div>
+      <h1 style="margin: 0; font-size: 28px;">Mi Biblioteca</h1>
+      <p style="color: #b3b3b3; margin: 4px 0 0 0; font-size: 14px;">Canciones guardadas localmente</p>
+    </div>
   </div>
 
-  <div *ngIf="isLoading" style="text-align: center; padding: 40px;">
-    <p>Cargando tu base de datos...</p>
+  <div *ngIf="isLoading" style="text-align: center; padding: 60px; color: white;">
+    <div class="spinner-large"></div>
+    <p style="margin-top: 15px; color: #b3b3b3;">Sincronizando...</p>
   </div>
 
   <div class="results-list" *ngIf="!isLoading">
     
-    <div class="result-card" *ngFor="let track of misCanciones">
-      <div class="card-image" style="background: #333; display: grid; place-items: center;">
-        <span>🎵</span>
+    <div class="result-card" *ngFor="let track of misCanciones" style="display: flex; align-items: center; gap: 15px; padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+      
+      <div class="card-image" style="background: #282828; width: 48px; height: 48px; border-radius: 4px; display: grid; place-items: center;">
+        <span class="material-symbols-rounded" style="font-size: 24px; color: #b3b3b3;">album</span>
       </div>
       
-      <div class="card-content">
-        <h3 class="card-title">{{ track.title }}</h3>
-        <p class="card-subtitle">ID en BD: {{ track.id }}</p>
-        <p class="card-detail">Duración: {{ track.duration }}ms</p>
+      <div class="card-content" style="flex: 1;">
+        <h3 class="card-title" style="margin: 0; color: white; font-size: 15px; font-weight: 500;">{{ track.title }}</h3>
+        
+        <div style="display: flex; gap: 10px; margin-top: 4px;">
+          <span style="color: #1db954; font-size: 11px; background: rgba(29, 185, 84, 0.1); padding: 2px 6px; border-radius: 4px;">
+            ID: {{ track.id ? (track.id.substring(0, 8) + '...') : '—' }}
+          </span>
+          <span style="color: #888; font-size: 12px; display: flex; align-items: center; gap: 4px;">
+            <span class="material-symbols-rounded" style="font-size: 14px;">schedule</span>
+            {{ track.duration ? (track.duration / 60000 | number:'1.0-0') + ':' + ((track.duration % 60000) / 1000 | number:'2.0-0') : '0:00' }}
+          </span>
+        </div>
       </div>
+
+      <span class="material-symbols-rounded" style="color: #1db954; margin-right: 10px;">favorite</span>
     </div>
 
-    <div *ngIf="misCanciones.length === 0" style="text-align: center; margin-top: 20px;">
-      <p>No has guardado canciones aún.</p>
-    </div>
-
-  </div>
-</div><div class="search-results-container"> <div class="results-header">
-    <h1>Mi Biblioteca </h1>
-  </div>
-
-  <div *ngIf="isLoading" style="text-align: center; padding: 40px;">
-    <p>Cargando tu base de datos...</p>
-  </div>
-
-  <div class="results-list" *ngIf="!isLoading">
-    
-    <div class="result-card" *ngFor="let track of misCanciones">
-      <div class="card-image" style="background: #333; display: grid; place-items: center;">
-        <span>🎵</span>
-      </div>
-      
-      <div class="card-content">
-        <h3 class="card-title">{{ track.title }}</h3>
-        <p class="card-subtitle">ID en BD: {{ track.id }}</p>
-        <p class="card-detail">Duración: {{ track.duration }}ms</p>
-      </div>
-    </div>
-
-    <div *ngIf="misCanciones.length === 0" style="text-align: center; margin-top: 20px;">
-      <p>No has guardado canciones aún.</p>
+    <div *ngIf="misCanciones.length === 0" style="text-align: center; margin-top: 60px; color: #666;">
+      <span class="material-symbols-rounded" style="font-size: 64px; margin-bottom: 16px; opacity: 0.5;">sentiment_dissatisfied</span>
+      <p style="font-size: 18px; margin: 0;">Tu biblioteca está vacía</p>
+      <p style="font-size: 14px; margin-top: 8px;">Guarda canciones desde el reproductor</p>
     </div>
 
   </div>
