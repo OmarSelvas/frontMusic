@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators'; 
 import { MusicStateService } from '../services/music-state';
+import { BackendApiService } from '../services/api-backend.service';
 import { Track } from '../models/track.models';
+import { MyTrack, MyArtist, MyAlbum } from '../models/backend.model';
 
 @Component({
   selector: 'app-song',
@@ -15,56 +18,83 @@ export class Song implements OnInit, OnDestroy {
   currentTrack: Track | null = null;
   isLoading = false;
   errorMessage: string | null = null;
-  
+  saveMessage: string = '';  
+  realAlbumId: string = ''; 
+
   private subscriptions: Subscription[] = [];
 
-  constructor(private musicState: MusicStateService) {}
+  constructor(
+    private musicState: MusicStateService,
+    private myBackend: BackendApiService
+  ) {}
 
   ngOnInit(): void {
     const trackSub = this.musicState.currentTrack$.subscribe(track => {
       this.currentTrack = track;
+      this.saveMessage = '';
     });
-
-    const loadingSub = this.musicState.loading$.subscribe(loading => {
-      this.isLoading = loading;
-    });
-
-    const errorSub = this.musicState.error$.subscribe(error => {
-      this.errorMessage = error;
-    });
-
-    this.subscriptions.push(trackSub, loadingSub, errorSub);
+    this.subscriptions.push(trackSub);
   }
 
-  getImageUrl(): string {
-    if (this.currentTrack?.albumImage) {
-      return this.currentTrack.albumImage;
-    }
-    return 'assets/default-music.png';
-  }
-
-  hasImage(): boolean {
-    const url = this.getImageUrl();
-    return url !== 'assets/default-music.png' && url.length > 0;
-  }
-
-  getDuration(): string {
-    if (!this.currentTrack?.duration) return '0:00';
+  crearBaseDeDatos() {
+    this.saveMessage = '⏳ Creando Artista y Álbum...';
     
-    const minutes = Math.floor(this.currentTrack.duration / 60000);
-    const seconds = Math.floor((this.currentTrack.duration % 60000) / 1000);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    const artista: MyArtist = { name: 'Spotify General', genre: 'Pop' };
+
+    this.myBackend.createArtist(artista).pipe(
+      switchMap((artistaCreado: any) => {
+        console.log('✅ Artista creado:', artistaCreado);
+        
+        const album: MyAlbum = {
+          title: 'Favoritos de Spotify',
+          releaseYear: 2024,
+          artistId: artistaCreado.id 
+        };
+        return this.myBackend.createAlbum(album);
+      })
+    ).subscribe({
+      next: (albumCreado: any) => {
+        console.log('✅ ÁLBUM CREADO. ID:', albumCreado.id);
+        this.realAlbumId = albumCreado.id; // ¡GUARDAMOS EL ID REAL!
+        this.saveMessage = '✅ Base de datos lista. Ahora puedes guardar canciones.';
+      },
+      error: (err) => {
+        console.error(err);
+        this.saveMessage = '❌ Error creando base de datos (Revisa consola)';
+      }
+    });
   }
 
-  hasPreview(): boolean {
-    return !!this.currentTrack?.previewUrl;
-  }
+  saveToMyDb(): void {
+    if (!this.currentTrack) return;
 
-  clearError(): void {
-    this.musicState.clearError();
-  }
+    if (!this.realAlbumId) {
+      this.saveMessage = '⚠️ Primero dale click al botón gris "Inicializar BD"';
+      return;
+    }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    const myTrackPayload: MyTrack = {
+      title: this.currentTrack.name,
+      duration: this.currentTrack.duration,
+      albumId: this.realAlbumId // <--- USAMOS EL ID VÁLIDO
+    };
+
+    this.myBackend.saveTrack(myTrackPayload).subscribe({
+      next: (response) => {
+        console.log('Guardado:', response);
+        this.saveMessage = '✅ Canción guardada correctamente';
+      },
+      error: (err) => {
+        console.error(err);
+        this.saveMessage = '❌ Error al guardar';
+      }
+    });
   }
+  
+  getImageUrl(): string { return this.currentTrack?.albumImage || 'assets/default-music.png'; }
+  hasImage(): boolean { return !!this.getImageUrl(); }
+  getDuration(): string { return '0:00'; }
+  hasPreview(): boolean { return false; }
+  clearError(): void {}
+  ngOnDestroy(): void { this.subscriptions.forEach(s => s.unsubscribe()); }
 }

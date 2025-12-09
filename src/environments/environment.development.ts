@@ -6,5 +6,8 @@ export const environment = {
     AUTH_API_URL: 'https://accounts.spotify.com/api/token',
     apiUrl: 'https://api.spotify.com/v1',
     redirectUri: 'http://localhost:4200'
+  },
+  myApi: {
+    url: 'http://localhost:3000/api' 
   }
 };

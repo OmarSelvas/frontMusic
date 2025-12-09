@@ -1,0 +1,55 @@
+<div class="search-results-container"> <div class="results-header">
+    <h1>Mi Biblioteca</h1>
+  </div>
+
+  <div *ngIf="isLoading" style="text-align: center; padding: 40px;">
+    <p>Cargando tu base de datos...</p>
+  </div>
+
+  <div class="results-list" *ngIf="!isLoading">
+    
+    <div class="result-card" *ngFor="let track of misCanciones">
+      <div class="card-image" style="background: #333; display: grid; place-items: center;">
+        <span>🎵</span>
+      </div>
+      
+      <div class="card-content">
+        <h3 class="card-title">{{ track.title }}</h3>
+        <p class="card-subtitle">ID en BD: {{ track.id }}</p>
+        <p class="card-detail">Duración: {{ track.duration }}ms</p>
+      </div>
+    </div>
+
+    <div *ngIf="misCanciones.length === 0" style="text-align: center; margin-top: 20px;">
+      <p>No has guardado canciones aún.</p>
+    </div>
+
+  </div>
+</div><div class="search-results-container"> <div class="results-header">
+    <h1>Mi Biblioteca </h1>
+  </div>
+
+  <div *ngIf="isLoading" style="text-align: center; padding: 40px;">
+    <p>Cargando tu base de datos...</p>
+  </div>
+
+  <div class="results-list" *ngIf="!isLoading">
+    
+    <div class="result-card" *ngFor="let track of misCanciones">
+      <div class="card-image" style="background: #333; display: grid; place-items: center;">
+        <span>🎵</span>
+      </div>
+      
+      <div class="card-content">
+        <h3 class="card-title">{{ track.title }}</h3>
+        <p class="card-subtitle">ID en BD: {{ track.id }}</p>
+        <p class="card-detail">Duración: {{ track.duration }}ms</p>
+      </div>
+    </div>
+
+    <div *ngIf="misCanciones.length === 0" style="text-align: center; margin-top: 20px;">
+      <p>No has guardado canciones aún.</p>
+    </div>
+
+  </div>
+</div>
