@@ -7,7 +7,7 @@ import { Track, TrackMapper } from '../models/track.models';
 import { Album, AlbumMapper } from '../models/album.model';
 import { Artist, ArtistMapper } from '../models/artist.model';
 import { SearchResult, SearchResultMapper } from '../models/search-result.model';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
