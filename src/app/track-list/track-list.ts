@@ -41,7 +41,7 @@ export class TrackList implements OnInit, OnDestroy {
       console.error('Canción inválida');
       return;
     }
-    this.musicState.selectTrack(track);
+    this.musicState.selectTrackAndReorder(track);
   }
 
   isCurrentTrack(track: Track): boolean {

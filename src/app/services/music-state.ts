@@ -65,8 +65,8 @@ export class MusicStateService {
           return;
         }
 
-        this.currentTrackSubject.next(tracks[0]);
         this.trackListSubject.next(tracks);
+        this.currentTrackSubject.next(tracks[0]);
         this.loadingSubject.next(false);
       },
       error: (error) => {
@@ -94,8 +94,8 @@ export class MusicStateService {
           return;
         }
 
-        this.currentTrackSubject.next(tracks[0]);
         this.trackListSubject.next(tracks);
+        this.currentTrackSubject.next(tracks[0]);
         this.loadingSubject.next(false);
       },
       error: (error) => {
@@ -183,4 +183,25 @@ export class MusicStateService {
   public getError(): string | null {
     return this.errorSubject.value;
   }
+  public selectTrackAndReorder(track: Track): void {
+  if (!track || !track.id) {
+    this.setError('Canción inválida');
+    return;
+  }
+
+  this.clearError();
+  
+  // Obtener lista actual
+  const currentList = this.trackListSubject.value;
+  
+  if (currentList.length > 0) {
+    // Filtrar la canción seleccionada
+    const filteredList = currentList.filter(t => t.id !== track.id);
+    // Poner la canción seleccionada al principio
+    const newList = [track, ...filteredList];
+    this.trackListSubject.next(newList);
+  }
+  
+  this.currentTrackSubject.next(track);
+}
 }

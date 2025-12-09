@@ -1,7 +1,8 @@
 .search-results-container {
-  padding: 40px 20px;
-  max-width: 1400px;
+  padding: 40px;
+  max-width: 1600px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .empty-state {
@@ -35,8 +36,8 @@
 .spinner-large {
   width: 50px;
   height: 50px;
-  border: 5px solid rgba(255,255,255,0.3);
-  border-top: 5px solid white;
+  border: 5px solid rgba(255,255,255,0.1);
+  border-top: 5px solid #9333ea;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 24px;
@@ -66,48 +67,47 @@
   margin-bottom: 32px;
 }
 
-.results-header h2 {
-  font-size: 28px;
+.results-header h1 {
+  font-size: 32px;
   color: white;
   margin: 0;
+  font-weight: 700;
 }
 
-.columns-container {
+.results-columns {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
 .results-column {
-  background: rgba(255, 255, 255, 0.349);
-  border-radius: 12px;
-  border: 2px solid rgba(0,0,0,0.6);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(88, 28, 135, 0.1) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(147, 51, 234, 0.3);
   overflow: hidden;
 }
 
 .column-header {
-  padding: 20px;
-  background: linear-gradient(135deg, #1ac556 0%, #089672 100%);
-  color: rgb(0, 0, 0);
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.column-header h3 {
+.column-header h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
 }
 
-.column-header .count {
-  font-size: 14px;
+.result-count {
+  font-size: 13px;
   opacity: 0.9;
 }
 
-.items-list {
+.results-list {
   padding: 16px;
   max-height: 600px;
   overflow-y: auto;
@@ -117,14 +117,15 @@
   display: flex;
   gap: 12px;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: all 0.2s;
   margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .result-card:hover {
-  background-color: #f5f5f5;
+  background: rgba(147, 51, 234, 0.2);
   transform: translateX(4px);
 }
 
@@ -134,7 +135,7 @@
   height: 80px;
   border-radius: 8px;
   overflow: hidden;
-  background: #f0f0f0;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .card-image img {
@@ -155,7 +156,7 @@
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  color: #ccc;
+  color: #666;
 }
 
 .artist-placeholder {
@@ -174,7 +175,7 @@
   margin: 0 0 4px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #000;
+  color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -183,7 +184,7 @@
 .card-subtitle {
   margin: 0 0 4px 0;
   font-size: 14px;
-  color: #181818;
+  color: #b3b3b3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -192,7 +193,7 @@
 .card-detail {
   margin: 0;
   font-size: 12px;
-  color: #181818;
+  color: #888;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -201,33 +202,29 @@
 .empty-column {
   padding: 40px 20px;
   text-align: center;
-  color: #181818;
+  color: #666;
 }
 
-.items-list::-webkit-scrollbar {
+.results-list::-webkit-scrollbar {
   width: 8px;
 }
 
-.items-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
+.results-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.items-list::-webkit-scrollbar-thumb {
-  background: #ccc;
+.results-list::-webkit-scrollbar-thumb {
+  background: rgba(147, 51, 234, 0.4);
   border-radius: 4px;
 }
 
-.items-list::-webkit-scrollbar-thumb:hover {
-  background: #999;
+.results-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(147, 51, 234, 0.6);
 }
 
-@media (max-width: 1024px) {
-  .columns-container {
+@media (max-width: 1200px) {
+  .results-columns {
     grid-template-columns: 1fr;
-  }
-  
-  .results-column {
-    margin-bottom: 24px;
   }
 }
 
@@ -236,8 +233,8 @@
     padding: 20px 12px;
   }
   
-  .results-header h2 {
-    font-size: 22px;
+  .results-header h1 {
+    font-size: 24px;
   }
   
   .card-image {

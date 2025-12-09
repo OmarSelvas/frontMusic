@@ -1,8 +1,11 @@
 <div class="track-list-container" *ngIf="hasTracks() && !isLoading">
   <div class="track-list-card">
     <div class="track-list-header">
-      <h3>Lista de canciones</h3>
-      <span class="track-count">{{getTrackCount()}}</span>
+      <div class="header-content">
+        <h3>MI LISTA</h3>
+        <span class="track-count">{{getTrackCount()}} canciones</span>
+      </div>
+      <button class="close-btn">✕</button>
     </div>
     
     <div class="track-list">
@@ -12,14 +15,20 @@
         [class.active]="isCurrentTrack(track)"
         (click)="selectTrack(track)"
       >
-        <div class="track-number">
-          <span class="number">{{getTrackNumber(i)}}</span>
-          <span class="play-icon">▶</span>
-        </div>
-        
-        <div class="track-info">
-          <div class="track-name" [title]="track.name">{{track.name}}</div>
-          <div class="track-artist" [title]="track.artistName">{{track.artistName}}</div>
+        <div class="track-left">
+          <div class="track-image">
+            <img 
+              *ngIf="track.albumImage"
+              [src]="track.albumImage" 
+              [alt]="track.name"
+            >
+            <div class="image-placeholder" *ngIf="!track.albumImage">🎵</div>
+          </div>
+          
+          <div class="track-info">
+            <div class="track-name" [title]="track.name">{{track.name}}</div>
+            <div class="track-artist" [title]="track.artistName">{{track.artistName}}</div>
+          </div>
         </div>
         
         <div class="track-duration">{{getDuration(track.duration)}}</div>

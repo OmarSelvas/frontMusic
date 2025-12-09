@@ -1,5 +1,6 @@
 <div class="search-results-container">
   <div class="empty-state" *ngIf="searchResults.isEmpty && !isSearching">
+    <div class="empty-icon">🔍</div>
     <h2>Busca tu música favorita</h2>
     <p>Usa la barra de búsqueda arriba para encontrar canciones, álbumes y artistas</p>
   </div>
@@ -11,17 +12,18 @@
 
   <div class="results-grid" *ngIf="searchResults.hasResults && !isSearching">
     <div class="results-header">
-      <h2>Resultados de búsqueda: "{{searchTerm}}"</h2>
+      <h1>Resultados de búsqueda: "{{searchTerm}}"</h1>
     </div>
 
-    <div class="columns-container">
+    <div class="results-columns">
+      <!-- Canciones -->
       <div class="results-column">
         <div class="column-header">
-          <h3>Canciones</h3>
-          <span class="count">{{searchResults.tracks.length}} resultados</span>
+          <h2>Canciones</h2>
+          <span class="result-count">{{searchResults.tracks.length}} resultados</span>
         </div>
         
-        <div class="items-list" *ngIf="searchResults.tracks.length > 0">
+        <div class="results-list" *ngIf="searchResults.tracks.length > 0">
           <div 
             class="result-card"
             *ngFor="let track of searchResults.tracks"
@@ -33,10 +35,10 @@
                 [src]="getImageUrl(track)" 
                 [alt]="track.name"
               >
-              <div class="image-placeholder" *ngIf="!hasImage(track)"></div>
+              <div class="image-placeholder" *ngIf="!hasImage(track)">🎵</div>
             </div>
             <div class="card-content">
-              <h4 class="card-title" [title]="track.name">{{track.name}}</h4>
+              <h3 class="card-title" [title]="track.name">{{track.name}}</h3>
               <p class="card-subtitle" [title]="track.artistName">{{track.artistName}}</p>
               <p class="card-detail">{{track.albumName}}</p>
             </div>
@@ -48,13 +50,14 @@
         </div>
       </div>
 
+      <!-- Álbumes -->
       <div class="results-column">
         <div class="column-header">
-          <h3> Álbumes</h3>
-          <span class="count">{{searchResults.albums.length}} resultados</span>
+          <h2>Álbumes</h2>
+          <span class="result-count">{{searchResults.albums.length}} resultados</span>
         </div>
         
-        <div class="items-list" *ngIf="searchResults.albums.length > 0">
+        <div class="results-list" *ngIf="searchResults.albums.length > 0">
           <div 
             class="result-card"
             *ngFor="let album of searchResults.albums"
@@ -69,7 +72,7 @@
               <div class="image-placeholder" *ngIf="!hasImage(album)">💿</div>
             </div>
             <div class="card-content">
-              <h4 class="card-title" [title]="album.name">{{album.name}}</h4>
+              <h3 class="card-title" [title]="album.name">{{album.name}}</h3>
               <p class="card-subtitle" [title]="album.artistName">{{album.artistName}}</p>
               <p class="card-detail">{{album.totalTracks}} canciones</p>
             </div>
@@ -81,13 +84,14 @@
         </div>
       </div>
 
+      <!-- Artistas -->
       <div class="results-column">
         <div class="column-header">
-          <h3>Artistas</h3>
-          <span class="count">{{searchResults.artists.length}} resultados</span>
+          <h2>Artistas</h2>
+          <span class="result-count">{{searchResults.artists.length}} resultados</span>
         </div>
         
-        <div class="items-list" *ngIf="searchResults.artists.length > 0">
+        <div class="results-list" *ngIf="searchResults.artists.length > 0">
           <div 
             class="result-card"
             *ngFor="let artist of searchResults.artists"
@@ -99,10 +103,10 @@
                 [src]="getImageUrl(artist)" 
                 [alt]="artist.name"
               >
-              <div class="image-placeholder artist-placeholder" *ngIf="!hasImage(artist)"></div>
+              <div class="image-placeholder artist-placeholder" *ngIf="!hasImage(artist)">👤</div>
             </div>
             <div class="card-content">
-              <h4 class="card-title" [title]="artist.name">{{artist.name}}</h4>
+              <h3 class="card-title" [title]="artist.name">{{artist.name}}</h3>
               <p class="card-subtitle">Artista</p>
               <p class="card-detail" *ngIf="artist.genres.length > 0">
                 {{artist.genres[0]}}
