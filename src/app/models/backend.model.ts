@@ -1,4 +1,3 @@
-
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
@@ -6,7 +5,7 @@ export interface ApiResponse<T> {
 }
 
 export interface MyArtist {
-  id?: string; 
+  id?: string;
   name: string;
   genre?: string;
 }

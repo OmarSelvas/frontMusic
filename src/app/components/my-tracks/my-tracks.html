@@ -1,5 +1,4 @@
 <div class="search-results-container">
-  
   <div class="results-header" style="display: flex; align-items: center; gap: 15px;">
     <span class="material-symbols-rounded" style="font-size: 36px; color: #1db954;">collections_bookmark</span>
     <div>
@@ -10,20 +9,17 @@
 
   <div *ngIf="isLoading" style="text-align: center; padding: 60px; color: white;">
     <div class="spinner-large"></div>
-    <p style="margin-top: 15px; color: #b3b3b3;">Sincronizando con base de datos...</p>
+    <p style="margin-top: 15px; color: #b3b3b3;">Cargando biblioteca...</p>
   </div>
 
   <div class="results-list" *ngIf="!isLoading">
-    
     <div class="result-card" *ngFor="let track of misCanciones" style="display: flex; align-items: center; gap: 15px; padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-      
       <div class="card-image" style="background: #282828; width: 48px; height: 48px; border-radius: 4px; display: grid; place-items: center;">
         <span class="material-symbols-rounded" style="font-size: 24px; color: #b3b3b3;">album</span>
       </div>
       
       <div class="card-content" style="flex: 1;">
         <h3 class="card-title" style="margin: 0; color: white; font-size: 15px; font-weight: 500;">{{ track.title }}</h3>
-        
         <div style="display: flex; gap: 10px; margin-top: 4px;">
           <span style="color: #1db954; font-size: 11px; background: rgba(29, 185, 84, 0.1); padding: 2px 6px; border-radius: 4px;">
             ID: {{ track.id ? (track.id.substring(0, 8) + '...') : '—' }}
@@ -40,18 +36,13 @@
         class="delete-btn"
         title="Eliminar de mi biblioteca"
         style="background: none; border: none; cursor: pointer; padding: 8px; display: flex; align-items: center; transition: all 0.2s;">
-        
-        <span class="material-symbols-rounded heart-icon">favorite</span>
-      
+        <span class="material-symbols-rounded heart-icon" style="color: #1db954; font-size: 24px;">favorite</span>
       </button>
-      
     </div>
 
     <div *ngIf="misCanciones.length === 0" style="text-align: center; margin-top: 60px; color: #666;">
       <span class="material-symbols-rounded" style="font-size: 64px; margin-bottom: 16px; opacity: 0.5;">sentiment_dissatisfied</span>
       <p style="font-size: 18px; margin: 0;">Tu biblioteca está vacía</p>
-      <p style="font-size: 14px; margin-top: 8px;">Guarda canciones desde el reproductor</p>
     </div>
-
   </div>
 </div>

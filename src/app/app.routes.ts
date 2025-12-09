@@ -7,7 +7,6 @@ export const routes: Routes = [
   { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: 'search', component: SearchResultsComponent },
   { path: 'player', component: PlayerView },
-  { path: 'mis-canciones', component: MyTracksComponent }, 
   { path: 'biblioteca', component: MyTracksComponent },
   { path: '**', redirectTo: '/search' }
 ];

@@ -10,6 +10,7 @@ import { MyTrack } from '../../models/backend.model';
   templateUrl: './my-tracks.html',
   styleUrls: ['./my-tracks.css']
 })
+
 export class MyTracksComponent implements OnInit {
   misCanciones: MyTrack[] = [];
   isLoading = true;
@@ -21,38 +22,32 @@ export class MyTracksComponent implements OnInit {
   }
 
   cargarCanciones() {
+    this.isLoading = true;
     this.myBackend.getAllTracks().subscribe({
       next: (respuesta) => {
         this.misCanciones = respuesta.data || [];
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error cargando mis canciones', err);
+        console.error('Error cargando canciones', err);
         this.isLoading = false;
       }
     });
   }
 
   eliminarCancion(id: string | undefined) {
-    console.log('CLICK EN ELIMINAR. ID recibido:', id); 
+    if (!id) return;
 
-    if (!id) {
-      console.error('ERROR: El ID de la canción es nulo o inválido.');
-      return; 
-    }
-
-    if(confirm('¿Seguro que quieres borrar esta canción de tu biblioteca?')) {
-      
+    if(confirm('¿Seguro que quieres borrar esta canción?')) {
       const respaldo = [...this.misCanciones];
       this.misCanciones = this.misCanciones.filter(track => track.id !== id);
+
       this.myBackend.deleteTrack(id).subscribe({
-        next: () => {
-          console.log(`✅ Canción con ID ${id} eliminada de Ktor/PostgreSQL.`);
-        },
+        next: () => console.log('Eliminado correctamente'),
         error: (err) => {
-          console.error('❌ Error al eliminar en el servidor:', err);
+          console.error('Error al eliminar:', err);
           this.misCanciones = respaldo;
-          alert('Error al eliminar la canción del servidor. Revisa la consola (red).');
+          alert('Hubo un error al eliminar la canción');
         }
       });
     }

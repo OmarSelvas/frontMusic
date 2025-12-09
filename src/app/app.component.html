@@ -9,16 +9,14 @@
       </div>
       
       <nav class="sidebar-nav">
-        <a class="nav-item" (click)="navigateToSearch()" [class.active]="isSearchActive()">
+        <a class="nav-item" routerLink="/search" routerLinkActive="active">
           <span class="material-symbols-rounded">search</span>
           <span>Buscar</span>
         </a>
-
         <a class="nav-item" routerLink="/player" routerLinkActive="active">
           <span class="material-symbols-rounded">queue_music</span>
           <span>Reproduciendo</span>
         </a>
-
         <a class="nav-item" routerLink="/biblioteca" routerLinkActive="active">
           <span class="material-symbols-rounded">library_music</span>
           <span>Biblioteca</span>
